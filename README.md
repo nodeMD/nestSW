@@ -1,7 +1,7 @@
 
 ## Description
 
-Simple REST API for SW characters managements written using NestJS
+Simple REST API for SW characters management written using NestJS
 
 ## Installation
 
