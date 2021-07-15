@@ -33,12 +33,30 @@ describe('CharactersController', () => {
       .getCharacter('C-3PO')
       .then((character) => expect(character.name).toEqual('C-3PO'));
   });
-  it('should return given character', () => {
+  it('should add given character', () => {
     controller.addCharacter({ name: 'Maciej', episodes: ['one', 'two'] });
     expect(characters).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
           name: 'Maciej',
+        }),
+      ]),
+    );
+  });
+  it('should add batch of given characters', () => {
+    controller.addBatchOfCharacters([{ name: 'One', episodes: ['ok', 'das'] }, { name: "Duo", episodes: ["walk"], planet: "Earth" }]);
+    expect(characters).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          name: 'One',
+        }),
+      ]),
+    );
+    expect(characters).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          name: 'Duo',
+          planet: "Earth"
         }),
       ]),
     );
@@ -58,7 +76,7 @@ describe('CharactersController', () => {
       .deleteCharacter('Wojak')
       .catch((response) =>
         expect(response.toString()).toEqual(
-          'HttpException: Character does not exist!',
+          'HttpException: Character Wojak does not exist!',
         ),
       );
   });
@@ -74,7 +92,7 @@ describe('CharactersController', () => {
     expect(characters).not.toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          name: 'Han Solo',
+          name: 'R2-D2',
         }),
       ]),
     );
@@ -91,7 +109,7 @@ describe('CharactersController', () => {
       .updateCharacter('Wojak', { name: 'Gojak', episodes: ['one', 'two'] })
       .catch((response) =>
         expect(response.toString()).toEqual(
-          'HttpException: Character does not exist!',
+          'HttpException: Character Wojak does not exist!',
         ),
       );
     expect(characters).not.toEqual(

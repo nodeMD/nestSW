@@ -14,7 +14,7 @@ import { CharacterService } from './character.service';
 @ApiTags('characters')
 @Controller('characters')
 export class CharactersController {
-  constructor(private charactersService: CharacterService) {}
+  constructor(private charactersService: CharacterService) { }
 
   @Get()
   async getAllCharacters() {
@@ -32,6 +32,14 @@ export class CharactersController {
   async addCharacter(@Body() addCharacterDTO: CreateCharacterDTO) {
     const character = await this.charactersService.addCharacter(
       addCharacterDTO,
+    );
+    return character;
+  }
+
+  @Post()
+  async addBatchOfCharacters(@Body() addCharactersDTO: CreateCharacterDTO[]) {
+    const character = await this.charactersService.addBatchOfCharacters(
+      addCharactersDTO,
     );
     return character;
   }
