@@ -16,7 +16,9 @@ describe('AppController', () => {
 
   describe('root', () => {
     it('should return "Hello to Star Wars character management!"', () => {
-      expect(appController.getHello()).toBe('Hello to Star Wars character management!');
+      expect(appController.getHello()).toBe(
+        'Hello to Star Wars character management!',
+      );
     });
   });
 });
