@@ -7,7 +7,7 @@ import {
   Delete,
   Put,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { CreateCharacterDTO } from '../dto/create-character.dto';
 import { CharacterService } from './character.service';
 
@@ -37,6 +37,7 @@ export class CharactersController {
   }
 
   @Post()
+  @ApiBody({ type: [CreateCharacterDTO] })
   async addBatchOfCharacters(@Body() addCharactersDTO: CreateCharacterDTO[]) {
     const character = await this.charactersService.addBatchOfCharacters(
       addCharactersDTO,
@@ -57,6 +58,7 @@ export class CharactersController {
   }
 
   @Put()
+  @ApiBody({ type: [CreateCharacterDTO] })
   async updateBatchOfCharacters(
     @Body() addCharactersDTO: CreateCharacterDTO[],
   ) {
