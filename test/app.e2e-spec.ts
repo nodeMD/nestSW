@@ -6,7 +6,7 @@ import { CharactersModule } from '../src/characters/characters.module';
 import { CHARACTERS } from '../src/mocks/characters.mock';
 
 describe('AppController (e2e)', () => {
-  const charactersService = { getAllCharacters: () => CHARACTERS }
+  const charactersService = { getAllCharacters: () => JSON.stringify(CHARACTERS) }
 
   let app: INestApplication;
 
@@ -23,11 +23,11 @@ describe('AppController (e2e)', () => {
     return request(app.getHttpServer())
       .get('/')
       .expect(200)
-      .expect('Hello World!');
+      .expect('Hello from the Star Wars character management!');
   });
   it(`/GET characters`, () => {
-    return request(app.getHttpServer()).get('/characters').expect(200).expect({
-      data: charactersService.getAllCharacters(),
-    });
+    return request(app.getHttpServer()).get('/characters').expect(200).expect(
+      charactersService.getAllCharacters(),
+    );
   });
 });
