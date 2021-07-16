@@ -6,7 +6,10 @@ import { CharactersModule } from '../src/characters/characters.module';
 import { CHARACTERS } from '../src/mocks/characters.mock';
 
 describe('AppController (e2e)', () => {
-  const charactersService = { getAllCharacters: () => JSON.stringify(CHARACTERS) }
+  const charactersService = {
+    getAllCharacters: () => JSON.stringify(CHARACTERS),
+    getOneCharacter: (name) => JSON.stringify(CHARACTERS.filter(char => char.name === name)[0])
+  }
 
   let app: INestApplication;
 
@@ -28,6 +31,11 @@ describe('AppController (e2e)', () => {
   it(`/GET characters`, () => {
     return request(app.getHttpServer()).get('/characters').expect(200).expect(
       charactersService.getAllCharacters(),
+    );
+  });
+  it(`/GET characters R2-D2`, () => {
+    return request(app.getHttpServer()).get('/characters/R2-D2').expect(200).expect(
+      charactersService.getOneCharacter('R2-D2'),
     );
   });
 });
