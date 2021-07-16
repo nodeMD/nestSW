@@ -34,7 +34,7 @@ describe('CharactersController', () => {
       .then((character) => expect(character.name).toEqual('C-3PO'));
   });
   it('should add given character', () => {
-    controller.addCharacter({ name: 'Maciej', episodes: ['one', 'two'] });
+    controller.addCharacter({ name: 'Maciej', episodes: ['best', 'last'] });
     expect(characters).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
@@ -104,6 +104,51 @@ describe('CharactersController', () => {
       ]),
     );
   });
+  it('should update batch of given characters', () => {
+    controller
+      .updateBatchOfCharacters([{ name: 'Dynia', episodes: ['seven', 'eight'] }, { name: "Duo", episodes: ["no"], planet: "Venus" }])
+      .then((returnedCharacters) =>
+        expect(returnedCharacters).toEqual([{
+          name: 'Dynia',
+          episodes: ['seven', 'eight'],
+        }, {
+          name: "Duo",
+          episodes: ["no"],
+          planet: "Venus",
+        },
+        ]),
+      );
+    expect(characters).not.toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          episodes: ['one', 'two'],
+        }),
+      ]),
+    );
+    expect(characters).not.toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          episodes: ['walk'],
+          planet: 'Earth'
+        }),
+      ]),
+    );
+    expect(characters).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          episodes: ['seven', 'eight']
+        }),
+      ]),
+    );
+    expect(characters).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          episodes: ['no'],
+          planet: "Venus"
+        }),
+      ]),
+    );
+  });
   it('should return not found while trying to update not existing character', () => {
     controller
       .updateCharacter('Wojak', { name: 'Gojak', episodes: ['one', 'two'] })
@@ -120,4 +165,21 @@ describe('CharactersController', () => {
       ]),
     );
   });
-});
+  it('should delete batch of given characters', () => {
+    controller.deletebatchOfCharacters(["Maciej", "One"]);
+    expect(characters).not.toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          name: 'Maciej',
+        }),
+      ]),
+    );
+    expect(characters).not.toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          name: 'One',
+        }),
+      ]),
+    );
+  });
+})

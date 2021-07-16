@@ -56,9 +56,25 @@ export class CharactersController {
     return character;
   }
 
+  @Put()
+  async updateBatchOfCharacters(
+    @Body() addCharactersDTO: CreateCharacterDTO[],
+  ) {
+    const updatedCharacters = await this.charactersService.updateBatchOfCharacters(
+      addCharactersDTO,
+    );
+    return updatedCharacters;
+  }
+
   @Delete(':name')
   async deleteCharacter(@Param('name') name) {
     const characters = await this.charactersService.deleteCharacter(name);
+    return characters;
+  }
+
+  @Delete()
+  async deletebatchOfCharacters(@Body() names: string[]) {
+    const characters = await this.charactersService.deleteBatchOfCharacters(names);
     return characters;
   }
 }
