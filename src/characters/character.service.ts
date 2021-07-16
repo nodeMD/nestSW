@@ -16,10 +16,10 @@ export class CharacterService {
     return this.characters;
   };
 
-  addBatchOfCharacters(characters) {
-    for (let i = 0; i < characters.length; i++) {
-      this.characters.push(characters[i]);
-    }
+  addBatchOfCharacters(characters: CreateCharacterDTO[]) {
+    characters.forEach(character => {
+      this.addCharacter(character);
+    })
     return this.characters;
   };
 
