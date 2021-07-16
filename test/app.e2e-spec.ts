@@ -8,8 +8,9 @@ import { CHARACTERS } from '../src/mocks/characters.mock';
 describe('AppController (e2e)', () => {
   const charactersService = {
     getAllCharacters: () => JSON.stringify(CHARACTERS),
-    getOneCharacter: (name) => JSON.stringify(CHARACTERS.filter(char => char.name === name)[0])
-  }
+    getOneCharacter: (name) =>
+      JSON.stringify(CHARACTERS.filter((char) => char.name === name)[0]),
+  };
 
   let app: INestApplication;
 
@@ -29,13 +30,34 @@ describe('AppController (e2e)', () => {
       .expect('Hello from the Star Wars character management!');
   });
   it(`/GET characters`, () => {
-    return request(app.getHttpServer()).get('/characters').expect(200).expect(
-      charactersService.getAllCharacters(),
-    );
+    return request(app.getHttpServer())
+      .get('/characters')
+      .expect(200)
+      .expect(charactersService.getAllCharacters());
   });
   it(`/GET characters R2-D2`, () => {
-    return request(app.getHttpServer()).get('/characters/R2-D2').expect(200).expect(
-      charactersService.getOneCharacter('R2-D2'),
-    );
+    return request(app.getHttpServer())
+      .get('/characters/R2-D2')
+      .expect(200)
+      .expect(charactersService.getOneCharacter('R2-D2'));
+  });
+  it(`/POST character Maciej`, () => {
+    return request(app.getHttpServer())
+      .post('/characters/')
+      .send({ name: 'Maciej', episodes: ['one', 'three'] })
+      .expect(201)
+      .expect({ name: 'Maciej', episodes: ['one', 'three'] });
+  });
+  it(`/DELETE character R2-D2`, () => {
+    console.log(CHARACTERS);
+    return request(app.getHttpServer()).delete('/characters/R2-D2').expect(204);
+  });
+  it(`/PUT character C-3PO`, () => {
+    console.log(CHARACTERS);
+    return request(app.getHttpServer())
+      .put('/characters/C-3PO')
+      .expect(200)
+      .send({ name: 'Maciej', episodes: ['one', 'three'] })
+      .expect({ name: 'Maciej', episodes: ['one', 'three'] });
   });
 });

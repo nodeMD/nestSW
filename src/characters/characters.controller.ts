@@ -6,6 +6,7 @@ import {
   Body,
   Delete,
   Put,
+  HttpCode,
 } from '@nestjs/common';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { CreateCharacterDTO } from '../dto/create-character.dto';
@@ -14,7 +15,7 @@ import { CharacterService } from './character.service';
 @ApiTags('characters')
 @Controller('characters')
 export class CharactersController {
-  constructor(private charactersService: CharacterService) { }
+  constructor(private charactersService: CharacterService) {}
 
   @Get()
   async getAllCharacters() {
@@ -62,21 +63,21 @@ export class CharactersController {
   async updateBatchOfCharacters(
     @Body() addCharactersDTO: CreateCharacterDTO[],
   ) {
-    const updatedCharacters = await this.charactersService.updateBatchOfCharacters(
-      addCharactersDTO,
-    );
+    const updatedCharacters =
+      await this.charactersService.updateBatchOfCharacters(addCharactersDTO);
     return updatedCharacters;
   }
 
   @Delete(':name')
+  @HttpCode(204)
   async deleteCharacter(@Param('name') name) {
-    const characters = await this.charactersService.deleteCharacter(name);
-    return characters;
+    await this.charactersService.deleteCharacter(name);
   }
 
   @Delete()
+  @HttpCode(204)
+  @ApiBody({ type: [String] })
   async deletebatchOfCharacters(@Body() names: string[]) {
-    const characters = await this.charactersService.deleteBatchOfCharacters(names);
-    return characters;
+    await this.charactersService.deleteBatchOfCharacters(names);
   }
 }

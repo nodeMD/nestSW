@@ -44,7 +44,10 @@ describe('CharactersController', () => {
     );
   });
   it('should add batch of given characters', () => {
-    controller.addBatchOfCharacters([{ name: 'One', episodes: ['ok', 'das'] }, { name: "Duo", episodes: ["walk"], planet: "Earth" }]);
+    controller.addBatchOfCharacters([
+      { name: 'One', episodes: ['ok', 'das'] },
+      { name: 'Duo', episodes: ['walk'], planet: 'Earth' },
+    ]);
     expect(characters).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
@@ -56,7 +59,7 @@ describe('CharactersController', () => {
       expect.arrayContaining([
         expect.objectContaining({
           name: 'Duo',
-          planet: "Earth"
+          planet: 'Earth',
         }),
       ]),
     );
@@ -106,16 +109,21 @@ describe('CharactersController', () => {
   });
   it('should update batch of given characters', () => {
     controller
-      .updateBatchOfCharacters([{ name: 'Dynia', episodes: ['seven', 'eight'] }, { name: "Duo", episodes: ["no"], planet: "Venus" }])
+      .updateBatchOfCharacters([
+        { name: 'Dynia', episodes: ['seven', 'eight'] },
+        { name: 'Duo', episodes: ['no'], planet: 'Venus' },
+      ])
       .then((returnedCharacters) =>
-        expect(returnedCharacters).toEqual([{
-          name: 'Dynia',
-          episodes: ['seven', 'eight'],
-        }, {
-          name: "Duo",
-          episodes: ["no"],
-          planet: "Venus",
-        },
+        expect(returnedCharacters).toEqual([
+          {
+            name: 'Dynia',
+            episodes: ['seven', 'eight'],
+          },
+          {
+            name: 'Duo',
+            episodes: ['no'],
+            planet: 'Venus',
+          },
         ]),
       );
     expect(characters).not.toEqual(
@@ -129,14 +137,14 @@ describe('CharactersController', () => {
       expect.arrayContaining([
         expect.objectContaining({
           episodes: ['walk'],
-          planet: 'Earth'
+          planet: 'Earth',
         }),
       ]),
     );
     expect(characters).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          episodes: ['seven', 'eight']
+          episodes: ['seven', 'eight'],
         }),
       ]),
     );
@@ -144,7 +152,7 @@ describe('CharactersController', () => {
       expect.arrayContaining([
         expect.objectContaining({
           episodes: ['no'],
-          planet: "Venus"
+          planet: 'Venus',
         }),
       ]),
     );
@@ -166,7 +174,7 @@ describe('CharactersController', () => {
     );
   });
   it('should delete batch of given characters', () => {
-    controller.deletebatchOfCharacters(["Maciej", "One"]);
+    controller.deletebatchOfCharacters(['Maciej', 'One']);
     expect(characters).not.toEqual(
       expect.arrayContaining([
         expect.objectContaining({
@@ -182,4 +190,4 @@ describe('CharactersController', () => {
       ]),
     );
   });
-})
+});
