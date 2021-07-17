@@ -11,7 +11,16 @@ export class CharacterService {
   getAllCharacters() {
     return this.characters;
   }
+
   addCharacter(character) {
+    for (let i = 0; i < this.characters.length; i++) {
+      if (this.characters[i].name === character.name) {
+        throw new HttpException(
+          `Character ${character.name} already exists!`,
+          409,
+        );
+      }
+    }
     this.characters.push(character);
     return character;
   }
@@ -23,21 +32,24 @@ export class CharacterService {
     return this.characters;
   }
 
-  updateCharacter(name: string, character) {
+  updateCharacter(updatedCharacter) {
     const index = this.characters.findIndex(
-      (character) => character.name === name,
+      (character) => character.name === updatedCharacter.name,
     );
     if (index === -1) {
-      throw new HttpException(`Character ${name} does not exist!`, 404);
+      throw new HttpException(
+        `Character ${updatedCharacter.name} does not exist!`,
+        404,
+      );
     }
-    this.characters[index] = character;
+    this.characters[index] = updatedCharacter;
     return this.characters[index];
   }
 
   updateBatchOfCharacters(charactersToBeUpdated: CreateCharacterDTO[]) {
     const updatedCharacters: CreateCharacterDTO[] = [];
     charactersToBeUpdated.forEach((character) => {
-      const newCharacter = this.updateCharacter(character.name, character);
+      const newCharacter = this.updateCharacter(character);
       updatedCharacters.push(newCharacter);
     });
     return updatedCharacters;

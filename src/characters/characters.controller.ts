@@ -46,13 +46,9 @@ export class CharactersController {
     return character;
   }
 
-  @Put(':name')
-  async updateCharacter(
-    @Param('name') name,
-    @Body() addCharacterDTO: CreateCharacterDTO,
-  ) {
+  @Put()
+  async updateCharacter(@Body() addCharacterDTO: CreateCharacterDTO) {
     const character = await this.charactersService.updateCharacter(
-      name,
       addCharacterDTO,
     );
     return character;

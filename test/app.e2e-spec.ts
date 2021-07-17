@@ -49,15 +49,13 @@ describe('AppController (e2e)', () => {
       .expect({ name: 'Maciej', episodes: ['one', 'three'] });
   });
   it(`/DELETE character R2-D2`, () => {
-    console.log(CHARACTERS);
     return request(app.getHttpServer()).delete('/characters/R2-D2').expect(204);
   });
   it(`/PUT character C-3PO`, () => {
-    console.log(CHARACTERS);
     return request(app.getHttpServer())
-      .put('/characters/C-3PO')
+      .put('/characters/')
       .expect(200)
-      .send({ name: 'Maciej', episodes: ['one', 'three'] })
-      .expect({ name: 'Maciej', episodes: ['one', 'three'] });
+      .send({ name: 'C-3PO', episodes: ['one', 'three'] })
+      .expect({ name: 'C-3PO', episodes: ['one', 'three'] });
   });
 });

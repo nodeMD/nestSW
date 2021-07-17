@@ -43,6 +43,15 @@ describe('CharactersController', () => {
       ]),
     );
   });
+  it('should return conflict when trying to add already existing character', () => {
+    controller
+      .addCharacter({ name: 'Maciej', episodes: ['best', 'last'] })
+      .catch((response) =>
+        expect(response.toString()).toEqual(
+          'HttpException: Character Maciej already exists!',
+        ),
+      );
+  });
   it('should add batch of given characters', () => {
     controller.addBatchOfCharacters([
       { name: 'One', episodes: ['ok', 'das'] },
@@ -85,10 +94,10 @@ describe('CharactersController', () => {
   });
   it('should update given character', () => {
     controller
-      .updateCharacter('R2-D2', { name: 'Dynia', episodes: ['one', 'two'] })
+      .updateCharacter({ name: 'R2-D2', episodes: ['one', 'two'] })
       .then((returnedCharacter) =>
         expect(returnedCharacter).toEqual({
-          name: 'Dynia',
+          name: 'R2-D2',
           episodes: ['one', 'two'],
         }),
       );
@@ -96,13 +105,15 @@ describe('CharactersController', () => {
       expect.arrayContaining([
         expect.objectContaining({
           name: 'R2-D2',
+          episodes: ['NEWHOPE', 'EMPIRE', 'JEDI'],
         }),
       ]),
     );
     expect(characters).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          name: 'Dynia',
+          name: 'R2-D2',
+          episodes: ['one', 'two'],
         }),
       ]),
     );
@@ -110,13 +121,13 @@ describe('CharactersController', () => {
   it('should update batch of given characters', () => {
     controller
       .updateBatchOfCharacters([
-        { name: 'Dynia', episodes: ['seven', 'eight'] },
+        { name: 'R2-D2', episodes: ['seven', 'eight'] },
         { name: 'Duo', episodes: ['no'], planet: 'Venus' },
       ])
       .then((returnedCharacters) =>
         expect(returnedCharacters).toEqual([
           {
-            name: 'Dynia',
+            name: 'R2-D2',
             episodes: ['seven', 'eight'],
           },
           {
@@ -159,7 +170,7 @@ describe('CharactersController', () => {
   });
   it('should return not found while trying to update not existing character', () => {
     controller
-      .updateCharacter('Wojak', { name: 'Gojak', episodes: ['one', 'two'] })
+      .updateCharacter({ name: 'Wojak', episodes: ['one', 'two'] })
       .catch((response) =>
         expect(response.toString()).toEqual(
           'HttpException: Character Wojak does not exist!',
