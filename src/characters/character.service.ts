@@ -1,5 +1,5 @@
 import { CHARACTERS } from '../mocks/characters.mock';
-import { Injectable, ConflictException, NotFoundException } from '@nestjs/common';
+import { Injectable, ConflictException, NotFoundException, InternalServerErrorException } from '@nestjs/common';
 import { CreateCharacterDTO } from '../dto/create-character.dto';
 import * as AWS from 'aws-sdk'
 
@@ -16,9 +16,23 @@ if (process.env.IS_OFFLINE === 'true') {
 @Injectable()
 export class CharacterService {
   characters = CHARACTERS;
-  getCharacterByName(name: string) {
-    return this.characters.find((character) => character.name === name);
+
+  async getCharacterByName(name: string) {
+    let character;
+    try {
+      const result = await dynamoDB
+        .get({
+          TableName: process.env.CHARACTERS_TABLE_NAME,
+          Key: { name },
+        })
+        .promise();
+      character = result.Item;
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+    return character;
   }
+
   getAllCharacters() {
     return this.characters;
   }

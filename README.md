@@ -22,6 +22,12 @@ $ yarn start:dev
 $ yarn start:prod
 ```
 
+## Running serverless app localy
+
+```bash
+$ yarn build && serverless offline start
+```
+
 ## Test
 
 ```bash

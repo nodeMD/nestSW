@@ -35,3 +35,9 @@ lerna-debug.log*
 
 # DB
 .dynamodb
+
+# env variables
+.env
+
+# build output
+.build

@@ -1,7 +1,7 @@
 CharactersTable:
   Type: AWS::DynamoDB::Table
   Properties:
-    TableName: ${self:custom.CharactersTable.name}
+    TableName: Characters
     AttributeDefinitions:
       - AttributeName: name
         AttributeType: S
@@ -9,4 +9,3 @@ CharactersTable:
       - AttributeName: name
         KeyType: HASH
     BillingMode: PAY_PER_REQUEST
-    

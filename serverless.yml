@@ -2,7 +2,6 @@ service: aws-nestjs-dynamodb
 
 plugins:
   - serverless-dynamodb-local
-  - serverless-plugin-typescript
   - serverless-plugin-optimize
   - serverless-offline
 
@@ -49,3 +48,5 @@ custom:
   CharactersTable:
     name: !Ref CharactersTable
     arn: !GetAtt CharactersTable.Arn
+
+useDotenv: true
