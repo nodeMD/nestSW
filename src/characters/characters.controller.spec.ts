@@ -21,6 +21,7 @@ describe('CharactersController', () => {
     expect(controller).toBeDefined();
     expect(provider).toBeDefined();
   });
+
   it('should return all characters', () => {
     controller
       .getAllCharacters()
@@ -28,6 +29,7 @@ describe('CharactersController', () => {
         expect(returnedCharacters).toEqual(characters),
       );
   });
+
   it('should return given character', () => {
     controller
       .getCharacter('C-3PO')
@@ -43,6 +45,7 @@ describe('CharactersController', () => {
       ]),
     );
   });
+
   it('should return conflict when trying to add already existing character', () => {
     controller
       .addCharacter({ name: 'Maciej', episodes: ['best', 'last'] })
@@ -52,6 +55,7 @@ describe('CharactersController', () => {
         ),
       );
   });
+
   it('should add batch of given characters', () => {
     controller.addBatchOfCharacters([
       { name: 'One', episodes: ['ok', 'das'] },
@@ -73,6 +77,7 @@ describe('CharactersController', () => {
       ]),
     );
   });
+
   it('should delete given character', () => {
     controller.deleteCharacter('C-3PO');
     expect(characters).not.toEqual(
@@ -83,6 +88,7 @@ describe('CharactersController', () => {
       ]),
     );
   });
+
   it('should return not found while trying to delete not existing character', () => {
     controller
       .deleteCharacter('Wojak')
@@ -92,6 +98,7 @@ describe('CharactersController', () => {
         ),
       );
   });
+
   it('should update given character', () => {
     controller
       .updateCharacter({ name: 'R2-D2', episodes: ['one', 'two'] })
@@ -118,6 +125,7 @@ describe('CharactersController', () => {
       ]),
     );
   });
+
   it('should update batch of given characters', () => {
     controller
       .updateBatchOfCharacters([
@@ -168,6 +176,7 @@ describe('CharactersController', () => {
       ]),
     );
   });
+
   it('should return not found while trying to update not existing character', () => {
     controller
       .updateCharacter({ name: 'Wojak', episodes: ['one', 'two'] })
@@ -184,6 +193,7 @@ describe('CharactersController', () => {
       ]),
     );
   });
+
   it('should delete batch of given characters', () => {
     controller.deletebatchOfCharacters(['Maciej', 'One']);
     expect(characters).not.toEqual(

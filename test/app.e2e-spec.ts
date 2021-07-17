@@ -29,18 +29,21 @@ describe('AppController (e2e)', () => {
       .expect(200)
       .expect('Hello from the Star Wars character management!');
   });
+
   it(`/GET characters`, () => {
     return request(app.getHttpServer())
       .get('/characters')
       .expect(200)
       .expect(charactersService.getAllCharacters());
   });
+
   it(`/GET characters R2-D2`, () => {
     return request(app.getHttpServer())
       .get('/characters/R2-D2')
       .expect(200)
       .expect(charactersService.getOneCharacter('R2-D2'));
   });
+
   it(`/POST character Maciej`, () => {
     return request(app.getHttpServer())
       .post('/characters/')
@@ -48,9 +51,11 @@ describe('AppController (e2e)', () => {
       .expect(201)
       .expect({ name: 'Maciej', episodes: ['one', 'three'] });
   });
+
   it(`/DELETE character R2-D2`, () => {
     return request(app.getHttpServer()).delete('/characters/R2-D2').expect(204);
   });
+
   it(`/PUT character C-3PO`, () => {
     return request(app.getHttpServer())
       .put('/characters/')
