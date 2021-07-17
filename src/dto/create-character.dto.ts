@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateCharacterDTO {
   @ApiProperty({ type: String })
-  name: string;
+  readonly name: string;
   @ApiProperty({ type: [String] })
   episodes: string[];
   @ApiProperty({ type: String, required: false })

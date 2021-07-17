@@ -27,7 +27,7 @@ describe('AppController (e2e)', () => {
     return request(app.getHttpServer())
       .get('/')
       .expect(200)
-      .expect('Hello from the Star Wars character management!');
+      .expect('Hello from the Star Wars characters management!');
   });
 
   it(`/GET characters`, () => {
