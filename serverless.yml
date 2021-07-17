@@ -1,0 +1,51 @@
+service: aws-nestjs-dynamodb
+
+plugins:
+  - serverless-dynamodb-local
+  - serverless-plugin-typescript
+  - serverless-plugin-optimize
+  - serverless-offline
+
+provider:
+  name: aws
+  tracing:
+    apiGateway: true
+  runtime: nodejs14.x
+  memorySize: 256
+  stage: ${opt:stage, 'dev'}
+  region: eu-central-1
+  lambdaHashingVersion: 20201221
+  environment:
+    DYNAMODB_ENDPOINT: ${self:custom.endpoints.dynamodbURL}
+    CHARACTERS_TABLE_NAME: ${self:custom.CharactersTable.name}
+  iam:
+    role:
+      statements:
+        - ${file(iam/CharactersTableIAM.yml):CharactersTableIAM}
+
+package:  
+  individually: true
+
+resources:
+  Resources:
+    CharactersTable: ${file(resources/CharactersTable.yml):CharactersTable}
+
+functions:
+  main:
+    handler: src/main.handler
+    events:
+      - http:
+          method: any
+          path: /{proxy+}
+
+custom:
+  dynamodb:
+    stages:
+      - ${self:provider.stage}
+    start:
+      migrate: true
+  endpoints:
+    dynamodbURL: 'http://localhost:8000'
+  CharactersTable:
+    name: !Ref CharactersTable
+    arn: !GetAtt CharactersTable.Arn

@@ -1,6 +1,17 @@
 import { CHARACTERS } from '../mocks/characters.mock';
-import { Injectable, HttpException, ConflictException, NotFoundException } from '@nestjs/common';
+import { Injectable, ConflictException, NotFoundException } from '@nestjs/common';
 import { CreateCharacterDTO } from '../dto/create-character.dto';
+import * as AWS from 'aws-sdk'
+
+let dynamoDB;
+if (process.env.IS_OFFLINE === 'true') {
+  dynamoDB = new AWS.DynamoDB.DocumentClient({
+    region: 'localhost',
+    endpoint: process.env.DYNAMODB_ENDPOINT,
+  });
+} else {
+  dynamoDB = new AWS.DynamoDB.DocumentClient();
+}
 
 @Injectable()
 export class CharacterService {
