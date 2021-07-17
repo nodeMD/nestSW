@@ -30,4 +30,7 @@ $ yarn test
 
 # test coverage
 $ yarn test:cov
+
+# e2e tests
+$ yarn test:e2e
 ```
