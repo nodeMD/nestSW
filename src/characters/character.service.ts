@@ -1,5 +1,5 @@
 import { CHARACTERS } from '../mocks/characters.mock';
-import { Injectable, HttpException } from '@nestjs/common';
+import { Injectable, HttpException, ConflictException, NotFoundException } from '@nestjs/common';
 import { CreateCharacterDTO } from '../dto/create-character.dto';
 
 @Injectable()
@@ -15,9 +15,8 @@ export class CharacterService {
   addCharacter(character) {
     for (let i = 0; i < this.characters.length; i++) {
       if (this.characters[i].name === character.name) {
-        throw new HttpException(
-          `Character ${character.name} already exists!`,
-          409,
+        throw new ConflictException(
+          `Character ${character.name} already exists!`
         );
       }
     }
@@ -37,9 +36,8 @@ export class CharacterService {
       (character) => character.name === updatedCharacter.name,
     );
     if (index === -1) {
-      throw new HttpException(
-        `Character ${updatedCharacter.name} does not exist!`,
-        404,
+      throw new NotFoundException(
+        `Character ${updatedCharacter.name} does not exist!`
       );
     }
     this.characters[index] = updatedCharacter;
@@ -60,7 +58,7 @@ export class CharacterService {
       (character) => character.name === name,
     );
     if (index === -1) {
-      throw new HttpException(`Character ${name} does not exist!`, 404);
+      throw new NotFoundException(`Character ${name} does not exist!`);
     }
     this.characters.splice(index, 1);
     return this.characters;

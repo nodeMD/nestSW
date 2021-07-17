@@ -51,7 +51,7 @@ describe('CharactersController', () => {
       .addCharacter({ name: 'Maciej', episodes: ['best', 'last'] })
       .catch((response) =>
         expect(response.toString()).toEqual(
-          'HttpException: Character Maciej already exists!',
+          'ConflictException: Character Maciej already exists!',
         ),
       );
   });
@@ -94,7 +94,7 @@ describe('CharactersController', () => {
       .deleteCharacter('Wojak')
       .catch((response) =>
         expect(response.toString()).toEqual(
-          'HttpException: Character Wojak does not exist!',
+          'NotFoundException: Character Wojak does not exist!',
         ),
       );
   });
@@ -182,7 +182,7 @@ describe('CharactersController', () => {
       .updateCharacter({ name: 'Wojak', episodes: ['one', 'two'] })
       .catch((response) =>
         expect(response.toString()).toEqual(
-          'HttpException: Character Wojak does not exist!',
+          'NotFoundException: Character Wojak does not exist!',
         ),
       );
     expect(characters).not.toEqual(
