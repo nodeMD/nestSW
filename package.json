@@ -1,8 +1,8 @@
 {
   "name": "star-wars",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "Example of simple SW characters management API created with NestJS",
+  "author": "Maciej Dynieski",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
