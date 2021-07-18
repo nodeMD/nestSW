@@ -2,7 +2,6 @@ service: aws-nestjs-dynamodb
 
 plugins:
   - serverless-dynamodb-local
-  - serverless-plugin-optimize
   - serverless-offline
 
 provider:

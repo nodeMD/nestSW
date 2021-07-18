@@ -37,16 +37,21 @@ export class CharacterService {
     return this.characters;
   }
 
-  addCharacter(character) {
-    for (let i = 0; i < this.characters.length; i++) {
-      if (this.characters[i].name === character.name) {
-        throw new ConflictException(
-          `Character ${character.name} already exists!`
-        );
+  async addCharacter(character: CreateCharacterDTO) {
+    await dynamoDB.put({
+      TableName: process.env.CHARACTERS_TABLE_NAME,
+      Item: {
+        "name": character.name,
+        "episodes": character.episodes,
+        "planet": character.planet
+      },
+    }, function (err, data) {
+      if (err) {
+        return (`Unable to add item. Error JSON: ${JSON.stringify(err, null, 2)}`)
+      } else {
+        return (`Item added succesfuly: ${JSON.stringify(data, null, 2)}`)
       }
-    }
-    this.characters.push(character);
-    return character;
+    })
   }
 
   addBatchOfCharacters(characters: CreateCharacterDTO[]) {
@@ -56,37 +61,55 @@ export class CharacterService {
     return this.characters;
   }
 
-  updateCharacter(updatedCharacter) {
-    const index = this.characters.findIndex(
-      (character) => character.name === updatedCharacter.name,
-    );
-    if (index === -1) {
-      throw new NotFoundException(
-        `Character ${updatedCharacter.name} does not exist!`
-      );
-    }
-    this.characters[index] = updatedCharacter;
-    return this.characters[index];
+  async updateCharacter(character) {
+    await dynamoDB.update({
+      TableName: process.env.CHARACTERS_TABLE_NAME,
+      Key: {
+        "name": character.name
+      },
+      UpdateExpression: " set episodes = :e, planet = :p",
+      ExpressionAtrributeValues: {
+        ":e": character.episodes,
+        ":p": character.planet
+      },
+      ReturnValues: "UPDATED_NEW"
+    }, function (err, data) {
+      if (err) {
+        return (`Unable to update item. Error JSON: ${JSON.stringify(err, null, 2)}`)
+      } else {
+        return (`Item updated succesfuly: ${JSON.stringify(data, null, 2)}`)
+      }
+    })
   }
+
 
   updateBatchOfCharacters(charactersToBeUpdated: CreateCharacterDTO[]) {
     const updatedCharacters: CreateCharacterDTO[] = [];
     charactersToBeUpdated.forEach((character) => {
       const newCharacter = this.updateCharacter(character);
-      updatedCharacters.push(newCharacter);
+      // updatedCharacters.push(newCharacter);
     });
     return updatedCharacters;
   }
 
-  deleteCharacter(name: string) {
-    const index = this.characters.findIndex(
-      (character) => character.name === name,
-    );
-    if (index === -1) {
-      throw new NotFoundException(`Character ${name} does not exist!`);
-    }
-    this.characters.splice(index, 1);
-    return this.characters;
+  async deleteCharacter(name: string) {
+    await dynamoDB.delete({
+      TableName: process.env.CHARACTERS_TABLE_NAME,
+      Key: {
+        name
+      },
+      ConditionExpression: "name == :name",
+      ExpressionAttributeValues: {
+        ":name": name
+      }
+    }, function (err, data) {
+      if (err) {
+        return (`Unable to delete item. Error JSON: ${JSON.stringify(err, null, 2)}`)
+      } else {
+        return (`Item deleted succesfuly: ${JSON.stringify(data, null, 2)}`)
+      }
+    })
+
   }
 
   deleteBatchOfCharacters(names: string[]) {

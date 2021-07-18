@@ -16,4 +16,6 @@ async function bootstrap() {
 
   await app.listen(3000);
 }
-bootstrap();
+export async function handler(event, context) {
+  bootstrap();
+}
