@@ -6,6 +6,14 @@ import { CreateCharacterDTO } from '../dto/create-character.dto';
 export class CharacterService {
   characters = CHARACTERS;
   getCharacterByName(name: string) {
+    const index = this.characters.findIndex(
+      (character) => character.name === name,
+    );
+    if (index === -1) {
+      throw new NotFoundException(
+        `Character ${name} does not exist!`
+      );
+    }
     return this.characters.find((character) => character.name === name);
   }
   getAllCharacters() {
