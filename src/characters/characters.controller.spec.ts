@@ -35,6 +35,17 @@ describe('CharactersController', () => {
       .getCharacter('C-3PO')
       .then((character) => expect(character.name).toEqual('C-3PO'));
   });
+
+  it('should return not found when given character does not exist', () => {
+    controller
+      .getCharacter('Quantum')
+      .catch((response) =>
+        expect(response.toString()).toEqual(
+          'NotFoundException: Character Quantum does not exist!',
+        ),
+      );
+  });
+
   it('should add given character', () => {
     controller.addCharacter({ name: 'Maciej', episodes: ['best', 'last'] });
     expect(characters).toEqual(
